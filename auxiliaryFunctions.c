@@ -7,8 +7,19 @@ uint64_t _millis = 0;
 uint16_t _1000us = 0;
 uint64_t old_millis = 0;
 
+#if defined(__arm__)
+  volatile uint12_t ADC_value = 0;
+#else
+  volatile uint16_t ADC_value = 0;
+#endif
 
 /* interrupts routines */
+
+//End of ADC conversion
+ISR(ADC_vect){
+  ADC_value = ADC;
+}
+
 // timer overflow occur every 0.256 ms
 ISR(TIM0_OVF_vect) {
   _1000us += 256;
@@ -26,6 +37,20 @@ uint64_t millis() {
   sei();
   return m;
 }
+
+#if defined(__arm__)
+uint12_t analogRead(){
+  sei()
+  ADCSRA |= _BV(ADSC);
+  while ()
+}
+
+#else
+uint10_t analogRead(){
+  ADCSRA |= _BV(ADSC);
+}
+#endif
+
 
 /*void id setup(void) {
 
