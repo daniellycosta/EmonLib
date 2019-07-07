@@ -41,13 +41,15 @@ uint64_t millis() {
 #if defined(__arm__)
 uint12_t analogRead(){
   sei()
-  ADCSRA |= _BV(ADSC);
-  while ()
+  ADCSRA |= _BV(ADEN) | _BV(ADSC) | _BV(ADIE);
+  while (!(0b11101111 | ADCSRA) )
 }
 
 #else
 uint10_t analogRead(){
-  ADCSRA |= _BV(ADSC);
+  sei()
+  ADCSRA |= _BV(ADSC) | _BV(ADIE);
+  while ()
 }
 #endif
 
